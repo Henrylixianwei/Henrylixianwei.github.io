@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Word Document</title>
+</head>
+
+<body>
+    <input type="file" id="fileInput">
+    <div id="output"></div>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth/mammoth.browser.min.js"></script>
+    <script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        console.log('file===', file)
+
+        reader.onload = function(e) {
+            const arrayBuffer = e.target.result;
+
+            mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
+                .then(function(result) {
+                    const html = result.value; // 这是解析后的HTML内容
+                    const messages = result.messages; // 如果有警告或错误消息，会在这里
+                    console.log('html===', html)
+                    console.error(messages)
+
+                    document.getElementById('output').innerHTML = html;
+                })
+                .catch(function(err) {
+                    console.error("Error reading Word document:", err);
+                });
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
+    </script>
+</body>
+
+</html>
