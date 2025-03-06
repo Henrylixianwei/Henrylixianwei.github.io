@@ -259,7 +259,7 @@
   }
 
   .work-card .lazy-img {
-    width: 100%;
+    width: 350px; /* 宽度不固定会导致懒加载异常：非视口区图片也加载了 */
     height: 150px;
     object-fit: cover;
     object-position: top;
