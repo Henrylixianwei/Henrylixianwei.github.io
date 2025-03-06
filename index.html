@@ -302,7 +302,7 @@
 
   /* 弹框主体 */
   .modal {
-    background: white;
+    background: rgba(0, 0, 0, .7);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     width: 95vw;
@@ -327,7 +327,10 @@
     align-items: center;
     margin-bottom: 0;
     padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
+  }
+
+  .modal-header-title {
+    color: #999;
   }
 
   /* 关闭按钮 */
@@ -336,7 +339,7 @@
     border: none;
     background: none;
     font-size: 20px;
-    color: #666;
+    color: #999;
     padding: 0 8px;
     transition: color 0.3s;
   }
