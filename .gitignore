@@ -1,0 +1,6 @@
+.env
+.DS_Store
+**/.DS_Store
+assets/unpackage
+projects/node_modules
+utils/node_modules

@@ -1,50 +1,378 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Projects</title>
+  <title>个人空间</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="shortcut icon" href="./favicon.png" />
   <link rel="stylesheet" href="./assets/swiper-bundle.min.css">
-  <style type="text/css">
+  <style>
+    :root {
+    --primary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --hover-color: #3498db;
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  }
+
   * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: Helvetica Neue;
   }
 
   body {
-    padding: 0;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+  }
+
+  a {
+    color: var(--hover-color);
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .collapsed-menu {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+    color: #666;
+    cursor: pointer;
+  }
+
+  .collapsed-menu:hover {
+    color: #333;
+  }
+
+  /* 左侧菜单样式 */
+  .sidebar {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+  }
+
+  .avatar-wraper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    align-self: center;
+  }
+
+  .avatar-container {
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+
+  .avatar-bg {
+    position: absolute;
+    width: 225px;
+    top: -34px;
+    left: -35px;
+    z-index: 999;
+  }
+
+  .avatar {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+  }
+
+  .avatar-wraper:hover .avatar {
+    transform: scale(1.1);
+    transition: all 0.5s cubic-bezier(0.25, 0.45, 0.45, 0.95);
+  }
+
+  .nav-menu {
+    list-style: none;
+  }
+
+  .nav-item {
+    margin: 15px 0;
+    transition: transform 0.3s ease;
+  }
+
+  .nav-item:hover {
+    transform: translateX(10px);
+  }
+
+  .nav-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    background: var(--hover-color);
+    color: white;
+  }
+
+  .nav-link i {
+    margin-right: 12px;
+    width: 25px;
+    text-align: center;
+  }
+
+  /* 右侧内容区域 */
+  .content-section {
+    display: none;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    animation: fadeIn 0.5s ease;
+    z-index: 998;
+  }
+
+  .active-section {
+    display: block;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 2em;
+    color: var(--primary-color);
+    margin-left: 15px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .section-title:hover {
+    color: var(--hover-color);
+  }
+
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-color), transparent);
+    border: none;
+    margin: 20px 0;
+  }
+
+  .content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    align-items: center;
+    color: #666;
+  }
+
+  .feature-list {
+    list-style: none;
+    font-size: 1.1em;
+  }
+
+  .feature-list li {
+    padding: 12px;
+    margin: 10px 0;
+    background: #f8f9fa;
+    border-radius: 6px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .feature-list li:hover {
+    transform: translateX(10px);
+    background: var(--hover-color);
+    color: white;
+  }
+
+  .content-wrapper-introduction li {
+    list-style-type: none;
+    color: #666;
+    letter-spacing: 1px;
+  }
+
+  .content-wrapper-introduction .base-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px 20px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: stretch;
+    gap: 30px;
+    color: #666;
+  }
+
+  .work-card {
+    width: 350px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .work-card:hover {
+    transform: scale(1.03);
+  }
+
+  .work-content {
+    position: relative;
+    padding: 10px 15px;
+  }
+
+  .work-content .project-link {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+  }
+
+  .work-content .project-link:hover {
+    color: #333;
+  }
+
+  .work-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .work-content p {
+    white-space: pre;
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  #particle {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #f5f5f7;
+    /* 白灰色背景 */
+  }
+
+  /* 遮罩层样式 */
+  .modal-mask {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  /* 显示时的遮罩层状态 */
+  .modal-mask.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* 弹框主体 */
+  .modal {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 95vw;
+    height: 95vh;
+    padding: 20px;
+    position: relative;
+    transform: scale(0.7);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* 显示时的弹框状态 */
+  .modal-mask.active .modal {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  /* 弹框标题 */
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* 关闭按钮 */
+  .close-btn {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 20px;
+    color: #666;
+    padding: 0 8px;
+    transition: color 0.3s;
+  }
+
+  .close-btn:hover {
+    color: #333;
+  }
+
+  /* 弹框内容 */
+  .modal-content {
     margin: 0;
+    line-height: 1.6;
+    width: 100%;
+    height: calc(100% - 17px);
   }
 
   .swiper {
-    width: calc(100vw - 40px);
-    height: calc(100vh - 40px);
-    background: #eeeeee;
-    border-radius: 20px;
-    margin: 20px;
-  }
-
-  .swiper2,
-  .swiper3,
-  .swiper4 {
-  	position: relative;
+    position: relative;
     width: 100%;
     height: 100%;
+    margin: 0;
   }
 
-  .swiper-pagination2,
-  .swiper-pagination3,
-  .swiper-pagination4 {
-  	position: absolute;
-  	top: 50%;
-  	right: 20px;
-  	transform: translateY(-50%);
-  	z-index: 100;
+  .swiper-wrapper {
+    height: calc(100% - 30px);
+  }
+
+  .swiper-pagination {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
   }
 
   .swiper-slide {
-  	width: 100%;
+    width: 100%;
   }
 
   .swiper-lazy {
@@ -54,225 +382,425 @@
     margin: 0 auto;
     align-self: center;
   }
+
+  .modal-content .preview-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      grid-template-columns: 1fr;
+    }
+
+    .collapsed-menu {
+      display: block;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      z-index: 100;
+      display: none;
+    }
+
+    .content-wrapper {
+      grid-template-columns: 1fr;
+    }
+  }
   </style>
 </head>
 
 <body>
-	<div class="swiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <!-- 嵌套swiper start -->
-        <div class="swiper2">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img data-src="./assets/img/iris GO1.webp" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/iris GO2.webp" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/iris GO3.webp" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/iris GO4.webp" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/iris GO5.webp" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/iris GO6.webp" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/iris GO9.webp" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/iris GO8.webp" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/iris GO9.webp" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/iris GO10.webp" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-          </div>
-          <div class="swiper-pagination2"></div>
+  <canvas id="particle"></canvas>
+  <div class="container">
+    <!-- 左侧菜单 -->
+    <i class="fa-solid fa-bars collapsed-menu fa-2x"></i>
+    <nav class="sidebar">
+      <div class="avatar-wraper">
+        <img class="avatar-bg" src="./assets/avatar-bg.png" />
+        <div class="avatar-container">
+          <img class="avatar" src="./assets/avatar.JPG" />
         </div>
-        <!-- 嵌套swiper end -->
       </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/多伦学车app.jpg" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="#portfolio" class="nav-link" onclick="showSection('portfolio')">
+            <i class="fas fa-folder-open"></i>个人作品
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#introduction" class="nav-link" onclick="showSection('introduction')">
+            <i class="fa-solid fa-address-card"></i>个人介绍
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#workexperience" class="nav-link" onclick="showSection('workexperience')">
+            <i class="fa-solid fa-briefcase"></i>工作经历
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#education" class="nav-link" onclick="showSection('education')">
+            <i class="fa-solid fa-user-graduate"></i>教育背景
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#hobby" class="nav-link" onclick="showSection('hobby')">
+            <i class="fa-solid fa-heart"></i>兴趣爱好
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#other" class="nav-link" onclick="showSection('other')">
+            <i class="fa-solid fa-paperclip"></i>其他
+          </a>
+        </li>
+        <!-- 其他菜单项（结构相同，修改图标和ID即可） -->
+      </ul>
+    </nav>
+    <!-- 右侧内容区域 -->
+    <section id="portfolio" class="content-section active-section">
+      <div class="section-header">
+        <i class="fas fa-folder-open fa-2x" style="color: var(--accent-color);"></i>
+        <a href="#portfolio" class="section-title">精选作品集</a>
       </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/野行农家乐app.jpg" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
-      </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/足球俱乐部会员平台.jpg" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
-      </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/能源储能管理平台.jpg" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
-      </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/智能化监控管理系统.jpg" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
-      </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/审计管理平台.png" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
-      </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/苏宁在线文档.png" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
-      </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/客户端财务管理工作台.png" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
-      </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/苏宁小店app.png" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
-      </div>
-      <div class="swiper-slide">
-        <!-- 嵌套swiper start -->
-        <div class="swiper3">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨易购登录.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨易购官网.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨易购详情.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨易购采购公告.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨易购公告详情.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨易购认证.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
+      <hr class="divider">
+      <div class="card-container">
+        <div class="work-card" onclick="showModal('iris GO','iris GO', true, 10, 'webp')">
+          <img src="./projects/iris GO/iris GO1.webp" alt="加载中...">
+          <div class="work-content">
+            <h3>iris GO · APP</h3>
+            <p>2014.10-2015.12 江苏，南京</p>
+            <i class="fa-solid fa-square-arrow-up-right fa-2x project-link" onclick="openLink('https://apps.apple.com/us/app/iris-go/id959960554')"></i>
           </div>
-          <div class="swiper-pagination3"></div>
         </div>
-        <!-- 嵌套swiper end -->
-      </div>
-      <div class="swiper-slide">
-        <!-- 嵌套swiper start -->
-        <div class="swiper4">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选启动首页.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选首页.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选供应订单.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选供应订单详情.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选采购.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选采购详情.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选采购报价.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选我的.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选发布商品.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选发布商品成功.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选发布产能成功.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
-            <div class="swiper-slide">
-              <img data-src="./assets/img/谷雨严选我的产能详情.png" class="swiper-lazy">
-              <div class="swiper-lazy-preloader"></div>
-            </div>
+        <div class="work-card" onclick="showModal('谷雨易购官网','guyuEbay', true, 6, 'png')">
+          <img src="./projects/guyuEbay/guyuEbay1.png" alt="加载中...">
+          <div class="work-content">
+            <h3>谷雨易购官网 · PC</h3>
+            <p>2021.05-2023.10 江苏，南京</p>
           </div>
-          <div class="swiper-pagination4"></div>
         </div>
-        <!-- 嵌套swiper end -->
+        <div class="work-card" onclick="showModal('谷雨严选','guyuSelection', true, 12, 'png')">
+          <img src="./projects/guyuSelection/guyuSelection2.png" alt="加载中..." style="object-position: 0 6%;">
+          <div class="work-content">
+            <h3>谷雨严选 · 小程序/公众号</h3>
+            <p>2021.05-2023.10 江苏，南京</p>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('区域性股权市场运行情况','daping', true, 3, 'png')">
+          <img src="./projects/daping/daping1.PNG" alt="加载中...">
+          <div class="work-content">
+            <h3>大屏-区域性股权市场运行情况 · PC</h3>
+            <p>2021.05-2023.10 江苏，南京</p>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('区域性股权市场区块链试点官网','blockChain', true, 5, 'png')">
+          <img src="./projects/blockChain/blockChain1.PNG" alt="加载中...">
+          <div class="work-content">
+            <h3>区域性股权市场区块链试点官网 · PC</h3>
+            <p>2021.05-2023.10 江苏，南京</p>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('审计管理平台','审计管理平台.png')">
+          <img src="./projects/审计管理平台.png" alt="加载中...">
+          <div class="work-content">
+            <h3>审计管理平台 · PC</h3>
+            <p>2019.04-2021.03 江苏，南京</p>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('苏宁在线文档','苏宁在线文档.png')">
+          <img src="./projects/苏宁在线文档.png" alt="加载中...">
+          <div class="work-content">
+            <h3>苏宁在线文档 · PC</h3>
+            <p>2019.04-2021.03 江苏，南京</p>
+            <i class="fa-solid fa-square-arrow-up-right fa-2x project-link" onclick="openLink('https://wd.suning.com')"></i>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('客户端财务管理工作台','客户端财务管理工作台.png')">
+          <img src="./projects/客户端财务管理工作台.png" alt="加载中...">
+          <div class="work-content">
+            <h3>客户端财务管理工作台 · PC桌面</h3>
+            <p>2019.04-2021.03 江苏，南京</p>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('苏宁小店app','苏宁小店app.png', 'contain')">
+          <img src="./projects/苏宁小店app.png" alt="加载中...">
+          <div class="work-content">
+            <h3>苏宁小店 · APP</h3>
+            <p>2019.04-2021.03 江苏，南京</p>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('足球俱乐部会员平台','足球俱乐部会员平台.jpg')">
+          <img src="./projects/足球俱乐部会员平台.jpg" alt="加载中...">
+          <div class="work-content">
+            <h3>足球俱乐部会员平台 · PC</h3>
+            <p>2017.06-2018.07 江苏，南京</p>
+            <i class="fa-solid fa-square-arrow-up-right fa-2x project-link" onclick="openLink('https://club.suning.com')"></i>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('智能化监控管理系统','智能化监控管理系统.jpg')">
+          <img src="./projects/智能化监控管理系统.jpg" alt="加载中...">
+          <div class="work-content">
+            <h3>智能化监控管理系统 · PC</h3>
+            <p>2018.10-2019.03 江苏，南京</p>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('能源储能管理平台','能源储能管理平台.jpg')">
+          <img src="./projects/能源储能管理平台.jpg" alt="加载中...">
+          <div class="work-content">
+            <h3>能源储能管理平台 · PC</h3>
+            <p>2018.10-2019.03 江苏，南京</p>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('野行农家乐','野行农家乐app.jpg')">
+          <img src="./projects/野行农家乐app.jpg" alt="加载中...">
+          <div class="work-content">
+            <h3>野行农家乐 · APP</h3>
+            <p>2016.03-2016.12 江苏，南京</p>
+          </div>
+        </div>
+        <div class="work-card" onclick="showModal('多伦学车','多伦学车app.jpg')">
+          <img src="./projects/多伦学车app.jpg" alt="加载中...">
+          <div class="work-content">
+            <h3>多伦学车 · APP</h3>
+            <p>2014.10-2015.12 江苏，南京</p>
+          </div>
+        </div>
+        <!-- 更多卡片 -->
       </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/大屏1.jpg" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
+    </section>
+    <section id="introduction" class="content-section">
+      <div class="section-header">
+        <i class="fa-solid fa-address-card fa-2x" style="color: var(--accent-color);"></i>
+        <a href="#introduction" class="section-title">个人介绍</a>
       </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/大屏2.PNG" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
+      <hr class="divider">
+      <div class="content-wrapper-introduction">
+        <div class="base-info">
+          <div>姓名：李贤伟</div>
+          <div>出生日期：1991-09-18</div>
+          <div>籍贯：江苏-徐州</div>
+          <div>联系电话：+86 158****6214</div>
+          <div>电子邮箱：<a href="mailto:caniuse@qq.com">caniuse@qq.com</a></div>
+          <div>职业：前端开发工程师</div>
+        </div>
+        <ul>
+          <li><i class="fa-solid fa-tag"></i> 软件工程专业，统招本科，专业基础知识扎实，热爱新技术，学习能力强。</li>
+          <li><i class="fa-solid fa-tag"></i> 精通JavaScript，Vue/React框架，熟悉uni-app/node/express/mysql/redis/webpack等。</li>
+          <li><i class="fa-solid fa-tag"></i> 有多个中大型项目开发经验，多年作为功能模块负责人经历，有一定的管理经验。</li>
+          <li><i class="fa-solid fa-tag"></i> 能独立完成前端研发流程，移动端、PC、微信小程序开发，应用分发上架管理。</li>
+          <li><i class="fa-solid fa-tag"></i> 良好的沟通理解协调能力，工作认真负责，和同事领导客户相处愉快。</li>
+          <li><i class="fa-solid fa-tag"></i> 英语水平读写熟练。</li>
+          <li><i class="fa-solid fa-tag"></i> 能吃苦。</li>
+        </ul>
       </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/大屏3.PNG" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
+    </section>
+    <section id="workexperience" class="content-section">
+      <div class="section-header">
+        <i class="fa-solid fa-briefcase fa-2x" style="color: var(--accent-color);"></i>
+        <a href="#workexperience" class="section-title">工作经历</a>
       </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/区域性股权市场区块链试点官网.PNG" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
+      <hr class="divider">
+      <div class="content-wrapper"></div>
+    </section>
+    <section id="education" class="content-section">
+      <div class="section-header">
+        <i class="fa-solid fa-user-graduate fa-2x" style="color: var(--accent-color);"></i>
+        <a href="#education" class="section-title">教育背景</a>
       </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/监管报表平台.PNG" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
+      <hr class="divider">
+      <div class="content-wrapper"></div>
+    </section>
+    <section id="hobby" class="content-section">
+      <div class="section-header">
+        <i class="fa-solid fa-heart fa-2x" style="color: var(--accent-color);"></i>
+        <a href="#hobby" class="section-title">兴趣爱好</a>
       </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/区域性股权市场区块链数据治理稽核平台.PNG" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
+      <hr class="divider">
+      <div class="content-wrapper"></div>
+    </section>
+    <section id="other" class="content-section">
+      <div class="section-header">
+        <i class="fa-solid fa-paperclip fa-2x" style="color: var(--accent-color);"></i>
+        <a href="#other" class="section-title">其他</a>
       </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/监管赋能服务前后台一体系统.PNG" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
-      </div>
-      <div class="swiper-slide">
-        <img data-src="./assets/img/监管业务后台管理系统.PNG" class="swiper-lazy">
-        <div class="swiper-lazy-preloader"></div>
+      <hr class="divider">
+      <div class="content-wrapper"></div>
+    </section>
+    <!-- 其他内容区块（结构相同） -->
+    <div class="modal-mask" id="mask">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-header-title"></h3>
+          <button class="close-btn" onclick="hideModal()">&times;</button>
+        </div>
+        <div class="modal-content" id="modal-container"></div>
       </div>
     </div>
-    <!-- 如果需要分页器 -->
-    <div class="swiper-pagination"></div>
   </div>
+  <script>
+  function showSection(sectionId) {
+    // 隐藏所有内容区块
+    document.querySelectorAll('.content-section').forEach(section => {
+      section.classList.remove('active-section')
+    })
+
+    // 显示目标区块
+    document.getElementById(sectionId).classList.add('active-section')
+
+    // 更新菜单激活状态
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active')
+    })
+
+    event.target.classList.add('active')
+  }
+
+  // 显示弹框（添加动画）
+  /*
+    title: 标题
+    path：图片路径
+    multiple: 是否多张图片
+    count：图片数量
+    suffix：图片格式
+  */
+  let mySwiper = null
+
+  function showModal(title, path, multiple, count, extname) {
+    // 加载图片
+    document.querySelectorAll('#mask .modal-header-title')[0].textContent = title
+
+    if (multiple && count) {
+      // 创建外层容器
+      const swiperContainer = document.createElement('div')
+      swiperContainer.className = 'swiper'
+
+      // 创建 swiper-wrapper
+      const swiperWrapper = document.createElement('div')
+      swiperWrapper.className = 'swiper-wrapper'
+
+      // 批量创建 slides
+      const fragment = document.createDocumentFragment()
+
+      for (let i = 0; i < count; i++) { 
+        // 创建 slide 容器
+        const slide = document.createElement('div')
+        slide.className = 'swiper-slide';
+
+        // 创建图片
+        const img = document.createElement('img')
+        img.className = 'swiper-lazy'
+        img.setAttribute('data-src', `./projects/${path}/${path + (i + 1)}.${extname}`)
+
+        // 创建预加载器
+        const preloader = document.createElement('div')
+        preloader.className = 'swiper-lazy-preloader'
+
+        // 组装元素
+        slide.appendChild(img)
+        slide.appendChild(preloader)
+        fragment.appendChild(slide) 
+      }
+
+      swiperWrapper.appendChild(fragment)
+
+      // 创建分页器
+      const pagination = document.createElement('div')
+      pagination.className = 'swiper-pagination'
+
+      // 组装完整结构
+      swiperContainer.appendChild(swiperWrapper)
+      swiperContainer.appendChild(pagination)
+
+      const modalContainer = document.getElementById('modal-container')
+      modalContainer.appendChild(swiperContainer)
+
+      // 初始化swiper
+      mySwiper = new Swiper('.swiper', {
+        direction: 'horizontal', // 垂直切换选项
+        loop: true, // 循环模式选项
+        // 如果需要分页器
+        pagination: {
+          clickable: true,
+          dynamicBullets: false,
+          dynamicMainBullets: 1,
+          el: '.swiper-pagination'
+        },
+        preloadImages: true,
+        lazy: {
+          loadPrevNext: true
+        }
+      })
+    } else {
+      // 创建图片
+      const img = document.createElement('img')
+      img.className = 'preview-image'
+      img.setAttribute('src', `./projects/${path}`)
+
+      const objectFitStyle = multiple
+      if (multiple) {
+        img.style.objectFit = objectFitStyle
+      }
+
+      const modalContainer = document.getElementById('modal-container')
+      modalContainer.appendChild(img)
+    }
+
+    const mask = document.getElementById('mask')
+    mask.classList.add('active')
+    document.body.style.overflow = 'hidden' // 防止背景滚动
+  }
+
+  // 隐藏弹框（添加动画）
+  function hideModal() {
+    mySwiper = null
+    const modalContainer = document.getElementById('modal-container')
+    const fragment = document.createDocumentFragment()
+    modalContainer.replaceChildren(fragment)
+
+    const mask = document.getElementById('mask')
+    mask.classList.remove('active')
+    document.body.style.overflow = 'auto' // 恢复滚动
+
+    // 动画结束后完全隐藏
+    mask.addEventListener('transitionend', function handler() {
+      mask.removeEventListener('transitionend', handler)
+    })
+  }
+
+  // 点击遮罩层关闭
+  document.getElementById('mask').addEventListener('click', function(e) {
+    if (e.target === this) {
+      hideModal()
+    }
+  })
+
+  // 按ESC键关闭
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      hideModal()
+    }
+  })
+
+  function openLink(link) {
+    window.open(link, '_blank')
+    event.stopPropagation()
+  }
+  </script>
+  <script type="text/javascript" src="./utils/particle.js"></script>
   <script src="./assets/swiper-bundle.min.js"></script>
-  <script src="./assets/main.js"></script>
 </body>
 
 </html>
