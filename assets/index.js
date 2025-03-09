@@ -31,7 +31,7 @@ let mySwiper = null
 
 function showModal(title, path, multiple, count) {
   // 加载图片
-  document.querySelectorAll('#mask .modal-header-title')[0].textContent = title
+  document.querySelectorAll('#mask .modal-header-title')[0].textContent = title + '111'
 
   if (multiple && count) {
     // 创建外层容器
