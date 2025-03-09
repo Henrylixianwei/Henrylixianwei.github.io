@@ -112,6 +112,7 @@ function showModal(title, path, multiple, count) {
   const mask = document.getElementById('mask')
   mask.classList.add('active')
   document.body.style.overflow = 'hidden' // 防止背景滚动
+  document.documentElement.style.overflow = 'hidden'
 }
 
 // 隐藏弹框（添加动画）
@@ -124,6 +125,7 @@ function hideModal() {
   const mask = document.getElementById('mask')
   mask.classList.remove('active')
   document.body.style.overflow = 'auto' // 恢复滚动
+  document.documentElement.style.overflow = 'auto'
 
   // 动画结束后完全隐藏
   mask.addEventListener('transitionend', function handler() {
