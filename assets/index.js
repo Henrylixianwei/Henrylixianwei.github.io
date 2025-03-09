@@ -31,7 +31,7 @@ let mySwiper = null
 
 function showModal(title, path, multiple, count) {
   // 加载图片
-  document.querySelectorAll('#mask .modal-header-title')[0].textContent = title + '333'
+  document.querySelectorAll('#mask .modal-header-title')[0].textContent = title
 
   if (multiple && count) {
     // 创建外层容器
@@ -132,7 +132,7 @@ function hideModal() {
   document.body.style.overflow = 'auto' // 恢复滚动
   // document.body.style.touchAction = 'auto'
 
-  const scrollTop = parseInt(document.body.style.top || '0');
+  const scrollTop = parseInt(document.body.style.top || '0')
   document.body.style.overflow = ''
   document.body.style.position = ''
   document.body.style.top = ''
