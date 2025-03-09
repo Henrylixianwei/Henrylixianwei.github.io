@@ -378,6 +378,7 @@ a {
 .modal-content .preview-image {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .content-section ul li i {
