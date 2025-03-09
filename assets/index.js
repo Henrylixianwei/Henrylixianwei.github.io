@@ -154,7 +154,11 @@ let navVisible = false
 
 function toggleNav() {
   navVisible = !navVisible
-  document.querySelectorAll('.sidebar')[0].style.display = navVisible ? 'flex' : 'none'
+  if (navVisible) {
+    document.querySelectorAll('.sidebar')[0].style.display = 'flex'
+  } else {
+    document.querySelectorAll('.sidebar')[0].removeAttribute('style')
+  }
 }
 
 // 使用 Intersection Observer API 实现
@@ -186,8 +190,4 @@ document.addEventListener('DOMContentLoaded', function() {
   lazyImages.forEach(img => {
     observer.observe(img)
   })
-})
-
-window.addEventListener('resize', function() {
-  window.location.reload()
 })
