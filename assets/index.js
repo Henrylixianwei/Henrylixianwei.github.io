@@ -31,7 +31,7 @@ let mySwiper = null
 
 function showModal(title, path, multiple, count) {
   // 加载图片
-  document.querySelectorAll('#mask .modal-header-title')[0].textContent = title + '222'
+  document.querySelectorAll('#mask .modal-header-title')[0].textContent = title + '333'
 
   if (multiple && count) {
     // 创建外层容器
@@ -112,8 +112,12 @@ function showModal(title, path, multiple, count) {
   const mask = document.getElementById('mask')
   mask.classList.add('active')
   document.body.style.overflow = 'hidden' // 防止背景滚动
-  document.documentElement.style.overflow = 'hidden'
-  document.body.style.touchAction = 'none'
+  // document.body.style.touchAction = 'none' // 图片无法缩放了
+
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  document.body.style.position = 'fixed'
+  document.body.style.top = `-${scrollTop}px`
+  document.body.style.width = '100%'
 }
 
 // 隐藏弹框（添加动画）
@@ -126,8 +130,13 @@ function hideModal() {
   const mask = document.getElementById('mask')
   mask.classList.remove('active')
   document.body.style.overflow = 'auto' // 恢复滚动
-  document.documentElement.style.overflow = 'auto'
-  document.body.style.touchAction = 'auto'
+  // document.body.style.touchAction = 'auto'
+
+  const scrollTop = parseInt(document.body.style.top || '0');
+  document.body.style.overflow = ''
+  document.body.style.position = ''
+  document.body.style.top = ''
+  window.scrollTo(0, Math.abs(scrollTop))
 
   // 动画结束后完全隐藏
   mask.addEventListener('transitionend', function handler() {
