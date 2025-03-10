@@ -209,7 +209,7 @@ a {
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: stretch;
+  justify-content: center;
   gap: 30px;
   color: #666;
 }
@@ -518,6 +518,7 @@ legend {
   .work-card .lazy-img,
   .content-wrapper {
     width: 300px;
+    margin: 0 auto;
     word-break: break-all;
     word-break: break-word;
   }
