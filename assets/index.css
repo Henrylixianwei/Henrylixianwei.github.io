@@ -521,4 +521,13 @@ legend {
     word-break: break-all;
     word-break: break-word;
   }
+
+  .content-wrapper .image-list {
+    grid-template-columns: 1fr;
+  }
+
+  .content-wrapper .image-list .lazy-img {
+    width: 100%;
+    height: auto;
+  }
 }
