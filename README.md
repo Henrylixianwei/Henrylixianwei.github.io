@@ -5,7 +5,7 @@
 
 
 ## 联系方式
-<p><h3 align="center">微信：iakunametata</h3></p>
-<p><h3 align="center">邮箱：caniuse@qq.com</h3></p>
+<p><h3>微信：iakunametata</h3></p>
+<p><h3>邮箱：caniuse@qq.com</h3></p>
 
 [预览](https://henrylixianwei.github.io/)
